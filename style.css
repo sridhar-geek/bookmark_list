@@ -25,6 +25,6 @@
     @apply bg-headingbg p-2 my-2 rounded-md
   }
   .bookmark-card{
-    @apply bg-card flex-initial p-6 rounded-lg flex flex-col gap-4 w-[400px]
+    @apply bg-card flex-initial p-6 rounded-lg flex flex-col gap-4 w-[400px] relative
   }
 }

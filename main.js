@@ -1,26 +1,30 @@
+import { FaRegEdit } from "react-icons/fa";
+
 // assigning elements
 const form = document.getElementById("form");
 const displaySection = document.getElementById("section");
-const heading = document.getElementById('heading')
-const bookmarkBtn = document.getElementById('addBtn')
+const heading = document.getElementById("heading");
+const bookmarkBtn = document.getElementById("addBtn");
 
 // to toggle bookmark button innerText
-let isUpdating = false
+let isUpdating = false;
 
-// adding form feilds to update 
-const title = document.getElementById("title")
-const url = document.getElementById("url")
-const category = document.getElementById("category")
-const tags = document.getElementById("tags")
+// adding form feilds to update
+const title = document.getElementById("title");
+const url = document.getElementById("url");
+const category = document.getElementById("category");
+const tags = document.getElementById("tags");
 
 // Function to render bookmarks from localStorage
 const renderBookmarks = () => {
-// clearing styles in display section
-  displaySection.innerHTML = ""; 
-  heading.innerHTML = ""
-  heading.classList.remove('background')
+  // clearing styles in display section
+  displaySection.innerHTML = "";
+  heading.innerHTML = "";
+  heading.classList.remove("background");
 
-  isUpdating ? bookmarkBtn.innerText = 'Update BookMark' : bookmarkBtn.innerText = 'Add BookMark'
+  isUpdating
+    ? (bookmarkBtn.innerText = "Update BookMark")
+    : (bookmarkBtn.innerText = "Add BookMark");
 
   const bookMarkArray = JSON.parse(localStorage.getItem("bookMarkArray"));
 
@@ -31,7 +35,7 @@ const renderBookmarks = () => {
   } else {
     const showHeading = document.createElement("aside");
     showHeading.innerHTML = `<h2 class="text-2xl md:text-4xl text-center font-semibold"> Your BookMarks</h2>`;
-    heading.classList.add('background')
+    heading.classList.add("background");
     heading.appendChild(showHeading);
     // looping over the bookmarkArray
     bookMarkArray.forEach((bookmark, index) => {
@@ -39,9 +43,8 @@ const renderBookmarks = () => {
       card.classList.add("bookmark-card");
       // cards of bookmarks
       card.innerHTML = `
-          <h2 class="text-xl text-center font-bold ">${
-            bookmark.title
-          }</h2>
+      <button class="absolute top-[-15px] right-[-5px] update-button text-3xl bg-yellow-500 rounded-full p-2" data-index="${index}">📝 </button>
+          <h2 class="text-xl text-center font-bold ">${bookmark.title}</h2>
           <p>Link to website : <a href="${
             bookmark.url
           }" target="_blank" class="font-semibold text-md">${
@@ -60,10 +63,8 @@ const renderBookmarks = () => {
           <h5 class="text-right">Added on:  <span class="font-bold"> ${
             bookmark.createAt
           }</span></h5>
-          <div class="flex justify-between">
-          <button class="update-button rounded-full bg-yellow-500 p-3 text-white font-bold text-md hover:bg-yellow-400" data-index="${index}">Update </button>
           <button class="delete-button rounded-full bg-red-500 p-3 text-white font-bold text-md hover:bg-red-400" data-index="${index}">Remove</button>
-          </div>`;
+         `;
 
       displaySection.appendChild(card);
       //  adding event listner to delete button
@@ -79,14 +80,14 @@ const renderBookmarks = () => {
 // Handling form data and saving it to localStorage
 const collectingData = (event) => {
   event.preventDefault();
-  isUpdating = false
+  isUpdating = false;
   // collecting form data
   const data = new FormData(event.target);
   const dataObject = Object.fromEntries(data.entries());
   // Adding data to local storage
   dataObject.createAt = new Date().toLocaleDateString();
   // checking if there are bookmarks and assigning them
-  let array = JSON.parse(localStorage.getItem("bookMarkArray")) || []
+  let array = JSON.parse(localStorage.getItem("bookMarkArray")) || [];
   array.push(dataObject);
   localStorage.setItem("bookMarkArray", JSON.stringify(array));
 
@@ -110,13 +111,13 @@ const updateBookmark = (index) => {
   // Update localStorage
   localStorage.setItem("bookMarkArray", JSON.stringify(bookMarkArray));
   //  populating values in form feilds
-  title.value  = updateBookmark[0].title
-  url.value  = updateBookmark[0].url
-  category.value  = updateBookmark[0].category
-  tags.value  = updateBookmark[0].tags
-  
+  title.value = updateBookmark[0].title;
+  url.value = updateBookmark[0].url;
+  category.value = updateBookmark[0].category;
+  tags.value = updateBookmark[0].tags;
+
   renderBookmarks();
-}
+};
 //  initial rendering
 renderBookmarks();
 // form eventlistner
