@@ -2,6 +2,16 @@
 const form = document.getElementById("form");
 const displaySection = document.getElementById("section");
 const heading = document.getElementById('heading')
+const bookmarkBtn = document.getElementById('addBtn')
+
+// to toggle bookmark button innerText
+let isUpdating = false
+
+// adding form feilds to update 
+const title = document.getElementById("title")
+const url = document.getElementById("url")
+const category = document.getElementById("category")
+const tags = document.getElementById("tags")
 
 // Function to render bookmarks from localStorage
 const renderBookmarks = () => {
@@ -9,6 +19,8 @@ const renderBookmarks = () => {
   displaySection.innerHTML = ""; 
   heading.innerHTML = ""
   heading.classList.remove('background')
+
+  isUpdating ? bookmarkBtn.innerText = 'Update BookMark' : bookmarkBtn.innerText = 'Add BookMark'
 
   const bookMarkArray = JSON.parse(localStorage.getItem("bookMarkArray"));
 
@@ -48,12 +60,18 @@ const renderBookmarks = () => {
           <h5 class="text-right">Added on:  <span class="font-bold"> ${
             bookmark.createAt
           }</span></h5>
-          <button class="delete-button rounded-full bg-red-500 p-3 text-white font-bold text-md hover:bg-red-400" data-index="${index}">Remove</button>            `;
+          <div class="flex justify-between">
+          <button class="update-button rounded-full bg-yellow-500 p-3 text-white font-bold text-md hover:bg-yellow-400" data-index="${index}">Update </button>
+          <button class="delete-button rounded-full bg-red-500 p-3 text-white font-bold text-md hover:bg-red-400" data-index="${index}">Remove</button>
+          </div>`;
 
       displaySection.appendChild(card);
-      const deleteButton = card.querySelector(".delete-button");
       //  adding event listner to delete button
+      const deleteButton = card.querySelector(".delete-button");
       deleteButton.addEventListener("click", () => deleteBookmark(index));
+      //  adding event listner to update button
+      const updateButton = card.querySelector(".update-button");
+      updateButton.addEventListener("click", () => updateBookmark(index));
     });
   }
 };
@@ -61,17 +79,14 @@ const renderBookmarks = () => {
 // Handling form data and saving it to localStorage
 const collectingData = (event) => {
   event.preventDefault();
+  isUpdating = false
   // collecting form data
   const data = new FormData(event.target);
   const dataObject = Object.fromEntries(data.entries());
-  console.log(dataObject)
   // Adding data to local storage
   dataObject.createAt = new Date().toLocaleDateString();
-  let array = [];
-  if (localStorage.getItem("bookMarkArray")) {
-    const localArr = JSON.parse(localStorage.getItem("bookMarkArray"));
-    array = [...localArr];
-  }
+  // checking if there are bookmarks and assigning them
+  let array = JSON.parse(localStorage.getItem("bookMarkArray")) || []
   array.push(dataObject);
   localStorage.setItem("bookMarkArray", JSON.stringify(array));
 
@@ -88,6 +103,20 @@ const deleteBookmark = (index) => {
   renderBookmarks();
 };
 
+const updateBookmark = (index) => {
+  isUpdating = true;
+  let bookMarkArray = JSON.parse(localStorage.getItem("bookMarkArray")) || [];
+  const updateBookmark = bookMarkArray.splice(index, 1);
+  // Update localStorage
+  localStorage.setItem("bookMarkArray", JSON.stringify(bookMarkArray));
+  //  populating values in form feilds
+  title.value  = updateBookmark[0].title
+  url.value  = updateBookmark[0].url
+  category.value  = updateBookmark[0].category
+  tags.value  = updateBookmark[0].tags
+  
+  renderBookmarks();
+}
 //  initial rendering
 renderBookmarks();
 // form eventlistner
