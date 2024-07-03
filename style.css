@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+ @layer base { 
+
+  body{
+    @apply bg-body
+  }
+
+  /* form styles */
+  .feilds{
+    @apply flex flex-col md:flex-row gap-2 md:justify-center md:items-center
+  }
+  .labels{
+    @apply md:w-[25%] text-2xl mt-2 md:mb-5
+  }
+  .inputs{
+    @apply md:w-[75%] rounded-md p-2 focus:ring focus:border-primary outline-none bg-input_bg text-xl mb-2 md:mb-5
+  }
+
+  /* display section */
+  .background{
+    @apply bg-headingbg p-2 my-2 rounded-md
+  }
+  .bookmark-card{
+    @apply bg-card flex-initial p-6 rounded-lg flex flex-col gap-4 w-[400px]
+  }
+}

@@ -1,0 +1,94 @@
+// assigning elements
+const form = document.getElementById("form");
+const displaySection = document.getElementById("section");
+const heading = document.getElementById('heading')
+
+// Function to render bookmarks from localStorage
+const renderBookmarks = () => {
+// clearing styles in display section
+  displaySection.innerHTML = ""; 
+  heading.innerHTML = ""
+  heading.classList.remove('background')
+
+  const bookMarkArray = JSON.parse(localStorage.getItem("bookMarkArray"));
+
+  if (!bookMarkArray || bookMarkArray.length === 0) {
+    const noBookmarks = document.createElement("aside");
+    noBookmarks.innerHTML = `<h2 class="text-2xl md:text-4xl text-center font-bold"> No BookMarks Added</h2>`;
+    displaySection.appendChild(noBookmarks);
+  } else {
+    const showHeading = document.createElement("aside");
+    showHeading.innerHTML = `<h2 class="text-2xl md:text-4xl text-center font-semibold"> Your BookMarks</h2>`;
+    heading.classList.add('background')
+    heading.appendChild(showHeading);
+    // looping over the bookmarkArray
+    bookMarkArray.forEach((bookmark, index) => {
+      const card = document.createElement("div");
+      card.classList.add("bookmark-card");
+      // cards of bookmarks
+      card.innerHTML = `
+          <h2 class="text-xl text-center font-bold ">${
+            bookmark.title
+          }</h2>
+          <p>Link to website : <a href="${
+            bookmark.url
+          }" target="_blank" class="font-semibold text-md">${
+        bookmark.url
+      }</a></p>
+          <div class="flex  gap-5 justify-between items-center">
+          <h4>Category: <span class="font-semibold text-wrap">${
+            bookmark.category
+          }</span></h4>
+          ${
+            bookmark.tags.length > 1
+              ? `<p>Tags: <span class="font-semibold text-wrap">${bookmark.tags}</span></p>`
+              : ``
+          }
+          </div>
+          <h5 class="text-right">Added on:  <span class="font-bold"> ${
+            bookmark.createAt
+          }</span></h5>
+          <button class="delete-button rounded-full bg-red-500 p-3 text-white font-bold text-md hover:bg-red-400" data-index="${index}">Remove</button>            `;
+
+      displaySection.appendChild(card);
+      const deleteButton = card.querySelector(".delete-button");
+      //  adding event listner to delete button
+      deleteButton.addEventListener("click", () => deleteBookmark(index));
+    });
+  }
+};
+
+// Handling form data and saving it to localStorage
+const collectingData = (event) => {
+  event.preventDefault();
+  // collecting form data
+  const data = new FormData(event.target);
+  const dataObject = Object.fromEntries(data.entries());
+  console.log(dataObject)
+  // Adding data to local storage
+  dataObject.createAt = new Date().toLocaleDateString();
+  let array = [];
+  if (localStorage.getItem("bookMarkArray")) {
+    const localArr = JSON.parse(localStorage.getItem("bookMarkArray"));
+    array = [...localArr];
+  }
+  array.push(dataObject);
+  localStorage.setItem("bookMarkArray", JSON.stringify(array));
+
+  form.reset();
+  renderBookmarks();
+};
+
+const deleteBookmark = (index) => {
+  let bookMarkArray = JSON.parse(localStorage.getItem("bookMarkArray")) || [];
+
+  bookMarkArray.splice(index, 1);
+  // Update localStorage
+  localStorage.setItem("bookMarkArray", JSON.stringify(bookMarkArray));
+  renderBookmarks();
+};
+
+//  initial rendering
+renderBookmarks();
+// form eventlistner
+form.addEventListener("submit", collectingData);
