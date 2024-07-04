@@ -1,4 +1,3 @@
-import { FaRegEdit } from "react-icons/fa";
 
 // assigning elements
 const form = document.getElementById("form");
@@ -43,7 +42,7 @@ const renderBookmarks = () => {
       card.classList.add("bookmark-card");
       // cards of bookmarks
       card.innerHTML = `
-      <button class="absolute top-[-15px] right-[-5px] update-button text-3xl bg-yellow-500 rounded-full p-2" data-index="${index}">📝 </button>
+      <button class="absolute top-[-15px] right-[-5px] update-button text-3xl bg-yellow-500 rounded-full p-2 hover:scale-110 duration-300" data-index="${index}">📝 </button>
           <h2 class="text-xl text-center font-bold ">${bookmark.title}</h2>
           <p>Link to website : <a href="${
             bookmark.url
