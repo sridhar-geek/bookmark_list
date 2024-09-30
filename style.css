@@ -21,10 +21,28 @@
   }
 
   /* display section */
+  .search { 
+    @apply block
+  }
   .background{
     @apply bg-headingbg p-2 my-2 rounded-md
   }
   .bookmark-card{
     @apply bg-card flex-initial p-6 rounded-lg flex flex-col gap-4 w-[400px] relative
+  }
+
+  /*Delete Dialog Box */
+  .confBtn{
+    @apply rounded-xl px-5 py-2 font-semibold text-white
+  }
+  /* Update Dialog Box */
+  .updateFeilds {
+    @apply flex flex-col
+  }
+  .updateLabels {
+    @apply  text-xl
+  }
+  .updateInputs {
+    @apply  rounded-md p-3 focus:ring focus:border-primary outline-none bg-input_bg text-sm
   }
 }

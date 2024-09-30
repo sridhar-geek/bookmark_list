@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- External file links -->
     <link rel="stylesheet" href="style.css">
+    <script defer type="module" src="/main.js"></script>
     <title>BookMark Manager</title>
   </head>
   <body>
@@ -12,7 +14,7 @@
       <header>
         <h1 class="text-center text-2xl lg:text-4xl text-primary font-bold mt-10">Bookmark Manger</h1>
       </header>
-      <!-- form feilds -->
+      <!-- Add Bookmark form feilds -->
       <form id="form" class="items-center mx-auto w-[55%] rounded-md p-5 max-w-[600px] mt-10">
         <div class="feilds">
             <label class="labels" for="title">Title</label>
@@ -30,13 +32,54 @@
             <label class="labels" for="tags">Tags</label>
             <input class="inputs" type="text" name="tags" id="tags"  placeholder="Tag fewthings">
         </div>
-        <button id="addBtn" class="p-4 mt-5 font-semibold text-white bg-primary hover:bg-blue-600 rounded-md mx-auto container"></button>
+        <button id="addBtn" class="p-4 mt-5 font-semibold text-white bg-primary hover:bg-blue-600 rounded-md mx-auto container">Add Bookmark</button>
       </form>
-      <!-- display section for bookmarks -->
+      <!-- Heading section  -->
       <div id="heading"></div>
+      <!-- Delete Conformation Dialog -->
+      <dialog  id="dialogBox" class="fixed z-10 bg-transparent  items-center justify-center hidden">
+        <article class="bg-white p-10  mx-auto shadow-xl shadow-blue-500 rounded-xl">
+          <h2 class="text-xl md:text-3xl font-bold text-wrap">Are you sure, you want to delete it</h2>
+          <div class="flex justify-around mt-5 items-center">
+            <button id="deleteBtn" class="confBtn bg-red-500 hover:bg-red-400">Yes</button>
+            <button id="cancelBtn" class="confBtn bg-green-700 hover:bg-green-500">No</button>
+          </div>
+        </article>
+      </dialog>
+        <!--  Update Dialog -->
+      <dialog id="updateDialogBox" class="z-10 fixed mx-auto bg-transparent justify-center  hidden px-6">
+        <article class="bg-white min-w-[340px] p-10 mx-auto shadow-xl shadow-blue-500 rounded-xl">
+          <h2 class="text-xl md:text-3xl font-bold text-center mb-2 text-wrap">Update Bookmark</h2>
+          <form id="updateForm">
+            <div class="updateFeilds">
+              <label class="updateLabels md:w-[100%]" for="updateTitle">Title</label>
+              <input class="updateInputs" type="text" name="updateTitle" id="updateTitle" minlength="5" placeholder="Title here" required>
+            </div>
+            <div class="updateFeilds">
+              <label class="updateLabels" for="updateUrl">Url</label>
+              <input class="updateInputs" type="url" name="updateUrl" id="updateUrl" placeholder="Enter url..." required>
+            </div>
+            <div class="updateFeilds">
+              <label class="updateLabels" for="updateCategory">Category</label>
+              <input class="updateInputs" type="text" name="updateCategory" id="updateCategory" placeholder="Category" required>
+            </div>
+            <div class="updateFeilds">
+              <label class="updateLabels" for="updateTags">Tags</label>
+              <input class="updateInputs" type="text" name="updateTags" id="updateTags" placeholder="Tag few things">
+            </div>
+            <div class="flex justify-around mt-5 items-center">
+              <button type="submit" id="updateConfirmBtn" class="confBtn bg-blue-500 hover:bg-blue-400">Update</button>
+              <button type="button" id="updateCancelBtn" class="confBtn bg-red-500 hover:bg-red-400">Cancel</button>
+            </div>
+          </form>
+        </article>
+      </dialog>
+     <!-- display section for bookmarks -->
+      <div class="flex ">
+        <input class="rounded-md hidden mx-auto p-2 focus:ring focus:border-primary outline-none bg-input_bg text-xl my-2" placeholder="Search your favorite Title" type="search" name="searchTitle" id="searchBox">
+      </div>
       <section id="section" class="flex my-10 mx-4 flex-wrap gap-4 items-stretch justify-center mt-9">
       </section>
     </main>
-    <script type="module" src="/main.js"></script>
   </body>
 </html>
